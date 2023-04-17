@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long int
+#define endl "\n"
+#define pb push_back
+#define inf 1e12
+const int N=1e5;
+vector<pair<int,int>> g[N];
+
+void dijkstra(int source,vector<int> &dist){
+	int n=dist.size();
+	vector<bool> vis(n+1,0);
+	set<pair<int,int>> st;
+	st.insert({0,source});
+	dist[source]=0;
+	while(!st.empty()){
+		auto p=st.begin();
+		int v=(*p).S,d=(*p).F;
+		st.erase(st.begin());
+		if(vis[v]){
+			continue;
+		}
+		vis[v]=1;
+		for(auto it : g[v]){
+			int child=it.F;
+			int wt=it.S;
+			if(dist[child]>wt+dist[v]){
+				dist[child]=wt+dist[v];
+				st.insert({dist[child],child});
+			}
+		}
+	}
+}
+
+int32_t main(){
+	int n,e;
+	cin>>n>>e;
+	rep(i,e){
+		int x,y,w;
+		cin>>x>>y>>w;
+		g[x].pb({y,w});
+		g[y].pb({x,w});
+	}
+	vector<int> dist(n+1);
+	for(int i=0;i<n+1;i++){
+		dist[i]=inf;
+	}
+	dijkstra(1,dist);
+	for(int i=1;i<=n;i++){
+		cout<<i<<' '<<dist[i]<<endl;
+	}
+}

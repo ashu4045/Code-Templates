@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+#define vii vector<int>
+#define inf 1e12
+const int N=1e5;
+// Toposort
+
+void dfs(int source,stack<int> &st,vii g[],vector<bool> &vis){
+	vis[source]=true;
+	for(int it : g[source]){
+		if(!vis[it]){
+			dfs(it,st,g,vis);
+		}
+	}
+	st.push(source);
+}
+
+int32_t main(){
+	int n,m;
+	cin>>n>>m;
+	vii g[n+1];
+	for(int i=0;i<m;i++){
+		int x,y;
+		cin>>x>>y;
+		g[x].pb(y);
+	}
+	vector<bool> vis(n+1,false);
+	stack<int> st;
+	dfs(1,st,g,vis);
+	vii ans;
+	while(!st.empty()){
+		ans.pb(st.top());
+		st.pop();
+	}
+	for(int i=0;i<ans.size();i++){
+		cout<<ans[i]<<' ';
+	}
+}

@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+#define F first
+#define S second
+#define all(x) x.begin(),x.end()
+const int N=1e5;
+int par[N];
+int size[N];
+//Krushkal's Algo
+
+void make(int n){
+	par[n]=n;
+	size[n]=1;
+}
+
+int find(int v){
+	if(par[v]==v){
+		return v;
+	}
+	return par[v]=find(par[v]);
+}
+
+void Union(int a,int b){
+	a=find(a);
+	b=find(b);
+	if(a!=b){
+		if(size[a]<size[b]){
+			swap(a,b);
+		}
+		par[b]=a;
+		size[a]+=size[b];
+	}
+}
+
+int32_t main(){
+	int n,e;
+	cin>>n>>e;
+	vector<pair<int,pair<int,int>> > edge;
+	for(int i=0;i<e;i++){
+		int x,y,z;
+		cin>>x>>y>>z;
+		edge.pb({z,{x,y}});
+	}
+	sort(all(edge));
+	for(int i=1;i<=n;i++){
+		make(i);
+	}
+	int cost=0;
+	for(auto it : edge){
+		int wt=it.first;
+		int u=it.S.F;
+		int v=it.S.S;
+		if(find(u)==find(v)){
+			continue;
+		}
+		Union(u,v);
+		cost+=wt;
+		cout<<u<<' '<<v<<endl;
+	}
+	cout<<cost<<endl;
+}

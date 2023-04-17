@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef unsigned long long ull;
+const int N=1000001;
+vector<ull> bit(N,0),a(N);
+int n,q,l,r;
+char t;
+using namespace std;
+
+//Type=1 Sum(l,r)
+//Type=2 Add(indx,value)
+//Type=3 Range_Add(l,r,value)
+
+
+ull sum(int i){
+	ull ans1=0;
+	while(i>0){
+		ans1+=(bit[i]);
+		i-=(i&(-i));
+	}
+	return ans1;
+}
+
+void add(int i,int value){
+	while(i<=n){
+		bit[i]+=value;
+		i+=(i&(-i));
+	}
+}
+
+void range_add(int l,int r,int val){
+	add(l,val);
+	add(r+1,-val);
+}
+
+int main(){
+	cin>>n>>q;
+	for(int i=1;i<=n;i++){
+		cin>>a[i];
+		add(i,a[i]);
+	}
+	while(q--){
+		int type;
+		cin>>type;
+		if(type==1){
+			cin>>l>>r;
+			l++;
+			r++;
+			cout<<sum(r)-sum(l-1)<<endl;
+		}
+		else if(type==2){
+			int indx,val;
+			cin>>indx>>val;
+			indx++;
+			add(indx,val);
+		}
+		else{
+			cin>>l>>r;
+			int val;
+			cin>>val;
+			l++;
+			r++;
+			range_add(l,r,val);
+		}
+	}
+}

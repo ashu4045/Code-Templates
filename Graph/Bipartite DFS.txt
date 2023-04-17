@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+#define vii vector<int>
+#define inf 1e12
+const int N=1e5;
+//Bipartite Graph DFS
+
+
+bool bipartite(int source,vector<int> g[],vector<int> &color){
+	if(color[source]==-1){
+		color[source]=1;
+	}
+	for(int it : g[source]){
+		if(color[it]==-1){
+			color[it]=1-color[source];
+			if(!bipartite(it,g,color)){
+				return false;
+			}
+		}
+		else if(color[it]==color[source]){
+			return false;
+		}
+	}
+	return true;
+}
+
+int32_t main(){
+	int n,m;
+	cin>>n>>m;
+	vector<int> g[n+1];
+	for(int i=0;i<m;i++){
+		int x,y;
+		cin>>x>>y;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
+	vector<int> color(n+1,-1);
+	bool check=false;
+	for(int i=1;i<=n;i++){
+		if(color[i]==-1){
+			if(!bipartite(i,g,color)){
+				check=true;
+				break;
+			}
+		}
+	}
+	if(check){
+		cout<<"Graph is not bipartite"<<endl;
+	}
+	else{
+		cout<<"Given Graph is a bipartite graph"<<endl;
+	}
+}

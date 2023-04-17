@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+#define vii vector<int>
+#define inf 1e12
+const int N=1e5;
+//Bridges in a Graph
+
+vector<pair<int,int>> ans;
+
+void dfs(int src,int par,vector<bool> &vis,vector<int> g[],int &timer,vector<int> &low,vector<int> &tin){
+	vis[src]=true;
+	low[src]=tin[src]=timer++;
+	for(int it : g[src]){
+		if(it==par){
+			continue;
+		}
+		if(!vis[it]){
+			dfs(it,src,vis,g,timer,low,tin);
+			low[src]=min(low[it],low[src]);
+
+			if(low[it]>tin[src]){
+				// cout<<it<<' '<<src<<endl;
+				ans.push_back({src,it});
+			}
+		}
+		else{
+			low[src]=min(low[src],tin[it]);
+		}
+	}
+}
+
+int32_t main(){
+	int n,m;
+	cin>>n>>m;
+	vector<int> g[n+1];
+	for(int i=0;i<m;i++){
+		int x,y;
+		cin>>x>>y;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
+	int timer=0;
+	vector<int> low(n+1,-1),tin(n+1,-1);
+	vector<bool> vis(n+1,false);
+
+	for(int i=1;i<=n;i++){
+		if(!vis[i]){
+			dfs(i,-1,vis,g,timer,low,tin);
+		}
+	}
+	for(auto it : ans){
+		cout<<it.first<<' '<<it.second<<endl;
+	}
+}

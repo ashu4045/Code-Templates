@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+#define vii vector<int>
+#define inf 1e12
+const int N=1e5;
+//Articulation points in a Graph
+
+
+void articulation(int src,int par,vector<bool> &vis,vector<int> g[],int timer,vector<int> &low,vector<int> &tin,vector<int> &artic){
+	vis[src]=1;
+	low[src]=tin[src]=timer++;
+	int child=0;
+	for(int it : g[src]){
+		if(it==par){
+			continue;
+		}
+		if(!vis[it]){
+			articulation(it,src,vis,g,timer,low,tin,artic);
+
+			low[src]=min(low[src],low[it]);
+
+			if(low[it]>=tin[src] and par!=-1){
+				artic[it]=1;
+			}
+			child++;
+		}
+		else{
+			low[src]=min(low[src],tin[it]);
+		}
+	}
+	if(par==-1 and child>0){
+		artic[src]=1;
+	}
+}
+
+int32_t main(){
+	int n,m;
+	cin>>n>>m;
+	vector<int> g[n+1];
+	for(int i=0;i<m;i++){
+		int x,y;
+		cin>>x>>y;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
+	int timer=0;
+	vector<int> low(n+1,-1),tin(n+1,-1);
+	vector<bool> vis(n+1,false);
+	vector<int> artic(n+1,0);
+	for(int i=1;i<=n;i++){
+		if(!vis[i]){
+			articulation(i,-1,vis,g,timer,low,tin,artic);
+		}
+	}
+	for(int i=1;i<=n;i++){
+		if(artic[i]==1){
+			cout<<i<<' ';
+		}
+	}
+}

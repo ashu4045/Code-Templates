@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+
+#define inf 1e12
+const int N=1e5;
+
+int32_t main(){
+	int n,m;
+	cin>>n>>m;
+	int dist[n+1][n+1];
+	for(int i=0;i<=n;i++){
+		for(int j=0;j<=n;j++){
+			if(i==j){
+				dist[i][j]=0;
+			}
+			else{
+				dist[i][j]=inf;
+			}
+		}
+	}
+	for(int i=0;i<m;i++){
+		int x,y,w;
+		cin>>x>>y>>w;
+		dist[x][y]=w;
+	}
+	for(int k=1;k<=n;k++){
+		for(int i=1;i<=n;i++){
+			for(int j=1;j<=n;j++){
+				if(dist[i][j]>dist[i][k]+dist[k][j]){
+					dist[i][j]=dist[i][k]+dist[k][j];
+				}
+			}
+		}
+	}
+
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			if(dist[i][j]==inf){
+				cout<<'I'<<' ';
+			}
+			else{
+				cout<<dist[i][j]<<' ';
+			}
+		}
+		cout<<endl;
+	}
+}

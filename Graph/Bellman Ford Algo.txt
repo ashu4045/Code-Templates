@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long 
+#define endl "\n"
+#define pb push_back
+#define inf 1e12
+const int N=1e5;
+
+int32_t main(){
+	int n,e;
+	cin>>n>>e;
+	vector<int> edges[n+1];
+	for(int i=0;i<e;i++){
+		int x,y,w;
+		cin>>x>>y>>w;
+		edges[i].pb(x);
+		edges[i].pb(y);
+		edges[i].pb(w);
+	}
+	vector<int> dist(n+1,1e9);
+	dist[1]=0;
+	for(int i=1;i<n;i++){
+		for(int j=0;j<e;j++){
+			int u=edges[j][0];
+			int v=edges[j][1];
+			int wt=edges[j][2];
+			if(dist[u]+wt<dist[v] and dist[u]!=1e9){
+				dist[v]=dist[u]+wt;
+			}
+		}
+	}
+	bool flag=false;
+	for(int i=0;i<e;i++){
+		int u=edges[i][0];
+		int v=edges[i][1];
+		int wt=edges[i][2];
+		if(dist[u]+wt<dist[v] and dist[u]!=1e9){
+			flag=1;
+		}
+	}
+	if(flag==1){
+		cout<<"Negative Cycle is present"<<endl;
+	}
+	else{
+		for(int i=1;i<=n;i++){
+			cout<<i<<' '<<dist[i]<<endl;
+		}
+	}
+}

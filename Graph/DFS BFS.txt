@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long int
+#define endl "\n"
+#define pb push_back
+
+const int N=1e5;
+vector<int> g[N];
+bool vis[N];
+void dfs(int source){
+	vis[source]=1;
+	cout<<source<<' ';
+	for(int it : g[source]){
+		if(!vis[it]){
+			dfs(it);
+		}
+	}
+}
+
+void bfs(int source){
+	vis[source]=1;
+	queue<int> q;
+	q.push(source);
+	while(!q.empty()){
+		int it=q.front();
+		q.pop();
+		cout<<it<<' ';
+		for(int i : g[it]){
+			if(!vis[i]){
+				q.push(i);
+				vis[i]=1;
+			}
+		}
+	}
+}
+
+int32_t main(){
+	int n,e;
+	cin>>n>>e;
+	rep(i,e){
+		int x,y;
+		cin>>x>>y;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
+	bfs(1);
+}

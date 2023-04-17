@@ -1,0 +1,57 @@
+#include <bits/stdc++.h> 
+using namespace std;
+typedef long long ll;
+ll merge(vector<ll> &arr,vector<ll> &arrr,ll left,ll mid,ll right){
+    ll i=left,j=mid,k=i,ans=0;
+    while(i<mid and j<=right){
+        if(arr[i]<=arr[j]){
+            arrr[k++]=arr[i++];
+        }
+        else{
+            arrr[k++]=arr[j++];
+            ans+=(mid-i);
+        }
+    }
+    while(i<mid){
+        arrr[k++]=arr[i++];
+    }
+    
+    while(j<=right){
+        arrr[k++]=arr[j++];
+    }
+    
+    for(ll i=left;i<=right;i++){
+        arr[i]=arrr[i];
+    }
+    
+    return ans;
+}
+
+ll mergesort(vector<ll> &arr,vector<ll> &arrr,ll left,ll right){
+    long long mid,count=0;
+    if(left<right){
+        mid=left+(right-left)/2;
+        count+=mergesort(arr,arrr,left,mid);
+        count+=mergesort(arr,arrr,mid+1,right);
+        
+        count+=merge(arr,arrr,left,mid+1,right);
+    }
+    return count;
+}
+
+ll getInversions(vector<ll> &arr, ll n){
+    vector<ll> arrr(n);
+    ll ans=mergesort(arr,arrr,0,n-1);
+    return ans;
+}
+
+int main(){
+	ll n;
+	cin>>n;
+	vector<ll> arr(n);
+	for(ll i=0;i<n;i++){
+		cin>>arr[i];
+	}
+	ll ans=getInversions(arr,n);
+	cout<<ans<<endl;
+}
