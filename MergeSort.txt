@@ -1,0 +1,110 @@
+#include <bits/stdc++.h>
+
+// #include<ext/pb_ds/assoc_container.hpp>
+// #include<ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+
+// using namespace std;
+// using namespace __gnu_pbds;
+
+#define int long long 
+// #define ll long long
+#define endl "\n"
+#define pb push_back
+#define poop pop_back
+#define vil vector<long long int>
+#define vii vector<int>
+#define vip vector<pair<int,int>>
+#define p_count __builtin_popcount
+#define all(x) x.begin(),x.end()
+#define L lower_bound
+#define U upper_bound
+#define F first
+#define S second
+#define mx_e(v) *max_element(all(v))
+#define mn_e(v) *min_element(all(v))
+#define rep(i,n) for(int i=0;i<n;i++)
+#define w(t) cin>>t; while(t--)
+#define min3(a,b,c) min(a,min(b,c))
+#define min4(a,b,c,d) min(a,min(b,min(c,d)))
+//typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+#define inf 1e18
+
+
+
+/*--------------------------Code----------------------------------------------------------------------------------------*/
+
+void merge(vector<int> &v, int s, int e){
+	int mid = s + (e-s)/2;
+	int len1 = (mid-s + 1);
+	int len2 = (e-mid);
+
+	vector<int> first(len1), second(len2);
+	int start =s;
+	for(int i = 0; i< len1; i++){
+		first[i]=v[start++];
+	}
+	for(int j =0; j < len2; j++){
+		second[j] = v[start++];
+	}
+	start = s;
+	int i=0, j = 0;
+	while(i<len1 && j<len2){
+		if(first[i]<second[j]){
+			v[start]=first[i];
+			i++;
+		}
+		else{
+			v[start]=second[j];
+			j++;
+		}
+		start++;
+	}
+
+	while(i<len1){
+		v[start]=first[i];
+		start++;
+		i++;
+	}
+
+	while(j<len2){
+		v[start] = second[j];
+		start++;
+		j++;
+	}
+}
+
+void mergesort(vector<int> &v, int s, int e){
+	if(s>=e) return ;
+
+	int mid = s + (e-s)/2;
+	mergesort(v, s, mid);
+	mergesort(v, mid+1, e);
+	merge(v, s, e);
+}
+
+void JAI_SHREE_RAM(){
+	int n;
+	cin>>n;
+	vector<int> v(n);
+	rep(i,n){
+		cin>>v[i];
+	}
+	mergesort(v, 0, n-1);
+	rep(i,n){
+		cout<<v[i]<<' ';
+	}
+}
+
+int32_t main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int t=1;
+    // cin>>t;
+    while(t--){
+    	// cout<<t<<endl;
+        JAI_SHREE_RAM();
+    }
+}
