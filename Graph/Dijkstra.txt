@@ -9,7 +9,6 @@ vector<pair<int,int>> g[N];
 
 void dijkstra(int source,vector<int> &dist){
 	int n=dist.size();
-	vector<bool> vis(n+1,0);
 	set<pair<int,int>> st;
 	st.insert({0,source});
 	dist[source]=0;
@@ -17,10 +16,6 @@ void dijkstra(int source,vector<int> &dist){
 		auto p=st.begin();
 		int v=(*p).S,d=(*p).F;
 		st.erase(st.begin());
-		if(vis[v]){
-			continue;
-		}
-		vis[v]=1;
 		for(auto it : g[v]){
 			int child=it.F;
 			int wt=it.S;
